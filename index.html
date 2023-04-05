@@ -13,9 +13,9 @@
 
 <h2>Access token</h2>
 
-<pre id="queryAccessToken"></pre>
+<textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token"></textarea>
 
-<textarea id="accessToken" rows="5" cols="100"></textarea>
+<textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
 
 <h2>Profile</h2>
 
@@ -70,7 +70,7 @@ function setProfile(value) {
 }
 
 function setQueryAccessToken() {
-  document.getElementById('queryAccessToken').innerText = `curl -X POST \              
+  document.getElementById('queryAccessToken').value = `curl -X POST \              
   https://api.instagram.com/oauth/access_token \
   -F client_id=${getClientId()} \
   -F client_secret=${getClientSecret()} \
