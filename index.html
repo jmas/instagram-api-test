@@ -44,6 +44,10 @@
   <tbody></tbody>
 </table>
 
+<p>
+  <a href="#" id="next">Next</a>
+</p>
+
 <script>
 function getRedirectUrl() {
   return `${location.protocol}//${location.host}${location.pathname}`;
@@ -83,6 +87,7 @@ function setMedia({ data, paging }) {
   }).join('');
 
   document.getElementById('media').querySelector('tbody').innerHTML = result;
+  document.getElementById('next').href = `${paging.next}`;
 }
 
 function readProfile() {
@@ -106,8 +111,19 @@ function readMedia() {
   });
 }
 
+function next(event) {
+  event.preventDefault();
+
+  fetch(event.currentTarget.href).then(response => response.json()).then(data => {
+    console.log({ data });
+
+    setMedia(data);
+  })
+}
+
 document.getElementById('readProfile').onclick = readProfile;
 document.getElementById('readMedia').onclick = readMedia;
+document.getElementById('next').onclick = next;
 
 setLogin();
 setQueryAccessToken();
