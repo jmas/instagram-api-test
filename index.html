@@ -23,15 +23,7 @@ via Instagram</a>
   <button type="button" id="readProfile">Read Profile</button>
 </p>
 
-<p>
-  <label>Username</label>
-  <input type="text" id="username" />
-</p>
-
-<p>
-  <label>ID</label>
-  <input type="text" id="username" />
-</p>
+<textarea id="profile" rows="5" cols="100"></textarea>
 
 <h2>Media</h2>
 
@@ -42,8 +34,11 @@ via Instagram</a>
 <table id="media">
   <thead>
     <tr>
-      <th>Image</th>
-      <th>URL</th>
+      <th>id</th>
+      <th>media_type</th>
+      <th>media_url</th>
+      <th>timestamp</th>
+      <th>username</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -54,21 +49,36 @@ function getAccessToken() {
   return document.getElementById('accessToken').value;
 }
 
+function setProfile(value) {
+  document.getElementById('profile').value = JSON.stringify(value, null, 2);
+}
+
+function setMedia({ data, paging }) {
+  const result = data.map(({ id, media_type, media_url, username, timestamp }) => {
+    return `<tr><td>${id}</td><td>${media_type}</td><td>${username}</td><td>${timestamp}</td></tr>`;
+  });
+
+  document.getElementById('media').querySelector('tbody').innerHTML = result;
+}
+
 function readProfile() {
   const accessToken = getAccessToken();
   
 fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,username&access_token=${accessToken}`).then(response => response.json()).then(data => {
     console.log({ data });
     // populate profile
+    setProfile(data);
   });
 }
 
 function readMedia() {
   const accessToken = getAccessToken();
   
-fetch(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`).then(response => response.json()).then(data => {
+  fetch(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`).then(response => response.json()).then(data => {
     console.log({ data });
+
     // populate media
+    setMedia(data);
   });
 }
 
