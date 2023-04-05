@@ -13,7 +13,7 @@
 
 <h2>Access token</h2>
 
-<textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token"></textarea>
+<textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token" onclick="this.select()"></textarea>
 
 <textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
 
@@ -45,8 +45,12 @@
 </table>
 
 <script>
+function getRedirectUrl() {
+  return `${location.protocol}//${location.host}${location.pathname}`;
+}
+
 function setLogin() {
-  document.getElementById('login').href = `https://api.instagram.com/oauth/authorize?client_id=${getClientId()}&redirect_uri=${location.href}&scope=user_profile,user_media&response_type=code`;
+  document.getElementById('login').href = `https://api.instagram.com/oauth/authorize?client_id=${getClientId()}&redirect_uri=${getRedirectUrl()}&scope=user_profile,user_media&response_type=code`;
 }
 
 function getClientId() {
@@ -70,18 +74,12 @@ function setProfile(value) {
 }
 
 function setQueryAccessToken() {
-  document.getElementById('queryAccessToken').value = `curl -X POST \              
-  https://api.instagram.com/oauth/access_token \
-  -F client_id=${getClientId()} \
-  -F client_secret=${getClientSecret()} \
-  -F grant_type=authorization_code \
-  -F redirect_uri=https://jmas.github.io/instagram-api-test/ \
-  -F code=${getCode()}`;
+  document.getElementById('queryAccessToken').value = `curl -X POST https://api.instagram.com/oauth/access_token -F client_id=${getClientId()} -F client_secret=${getClientSecret()} -F grant_type=authorization_code -F redirect_uri=https://jmas.github.io/instagram-api-test/ -F code=${getCode()}`;
 }
 
 function setMedia({ data, paging }) {
   const result = data.map(({ id, media_type, media_url, username, timestamp }) => {
-    return `<tr><td>${id}</td><td>${media_type}</td><td><a href="${media_url}">${media_url}</a></td><td>${username}</td><td>${timestamp}</td></tr>`;
+    return `<tr><td>${id}</td><td>${media_type}</td><td><a href="${media_url}" target="_blank"><img src="${media_url}" width="100" /></a></td><td>${username}</td><td>${timestamp}</td></tr>`;
   }).join('');
 
   document.getElementById('media').querySelector('tbody').innerHTML = result;
