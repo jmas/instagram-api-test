@@ -8,12 +8,12 @@
 <h1>Instagram API test</h1>
 
 <p>
-  <a href="https://api.instagram.com/oauth/authorize?client_id=748528576929557&redirect_uri=https://jmas.github.io/instagram-api-test/&scope=user_profile,user_media&response_type=code" 
-id="login">Login 
-via Instagram</a>
+  <a href="#" id="login">Login via Instagram</a>
 </p>
 
 <h2>Access token</h2>
+
+<pre id="queryAccessToken"></pre>
 
 <textarea id="accessToken" rows="5" cols="100"></textarea>
 
@@ -37,26 +37,52 @@ via Instagram</a>
       <th>id</th>
       <th>media_type</th>
       <th>media_url</th>
-      <th>timestamp</th>
       <th>username</th>
+      <th>timestamp</th>
     </tr>
   </thead>
   <tbody></tbody>
 </table>
 
 <script>
+function setLogin() {
+  document.getElementById('login').href = `https://api.instagram.com/oauth/authorize?client_id=${getClientId()}&redirect_uri=${location.href}&scope=user_profile,user_media&response_type=code`;
+}
+
+function getClientId() {
+  return localStorage.getItem('clientId');
+}
+
+function getClientSecret() {
+  return localStorage.getItem('clientSecret');
+}
+
 function getAccessToken() {
   return document.getElementById('accessToken').value;
+}
+
+function getCode() {
+  return new URLSearchParams(location.search).get('code');
 }
 
 function setProfile(value) {
   document.getElementById('profile').value = JSON.stringify(value, null, 2);
 }
 
+function setQueryAccessToken() {
+  document.getElementById('queryAccessToken').innerText = `curl -X POST \              
+  https://api.instagram.com/oauth/access_token \
+  -F client_id=${getClientId()} \
+  -F client_secret=${getClientSecret()} \
+  -F grant_type=authorization_code \
+  -F redirect_uri=https://jmas.github.io/instagram-api-test/ \
+  -F code=${getCode()}`;
+}
+
 function setMedia({ data, paging }) {
   const result = data.map(({ id, media_type, media_url, username, timestamp }) => {
-    return `<tr><td>${id}</td><td>${media_type}</td><td>${username}</td><td>${timestamp}</td></tr>`;
-  });
+    return `<tr><td>${id}</td><td>${media_type}</td><td><a href="${media_url}">${media_url}</a></td><td>${username}</td><td>${timestamp}</td></tr>`;
+  }).join('');
 
   document.getElementById('media').querySelector('tbody').innerHTML = result;
 }
@@ -84,6 +110,9 @@ function readMedia() {
 
 document.getElementById('readProfile').onclick = readProfile;
 document.getElementById('readMedia').onclick = readMedia;
+
+setLogin();
+setQueryAccessToken();
 </script>
 
 </body>
