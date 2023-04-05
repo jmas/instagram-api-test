@@ -45,7 +45,7 @@
 </table>
 
 <p>
-  <a href="#" id="next">Next</a>
+  <button type="button" id="next">Next</button>
 </p>
 
 <script>
@@ -87,7 +87,7 @@ function setMedia({ data, paging }) {
   }).join('');
 
   document.getElementById('media').querySelector('tbody').innerHTML = result;
-  document.getElementById('next').href = `${paging.next}`;
+  document.getElementById('next').dataset.url = `${paging.next}`;
 }
 
 function readProfile() {
@@ -112,9 +112,7 @@ function readMedia() {
 }
 
 function next(event) {
-  event.preventDefault();
-
-  fetch(event.currentTarget.href).then(response => response.json()).then(data => {
+  fetch(event.currentTarget.dataset.url).then(response => response.json()).then(data => {
     console.log({ data });
 
     setMedia(data);
