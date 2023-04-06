@@ -102,7 +102,7 @@ function setQueryAccessToken() {
   const clientId = getClientId();
   const clientSecret = getClientSecret();
 
-  if (clientId || clientSecret) {
+  if (!clientId || !clientSecret) {
     throw new Error('Provide clientId and clientSecret in Local Storage.');
   }
 
