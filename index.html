@@ -125,7 +125,7 @@ function setMedia({ data, paging }) {
   }).join('');
 
   document.getElementById('media').querySelector('tbody').innerHTML = result;
-  document.getElementById('next').dataset.url = `${paging.next}`;
+  document.getElementById('next').dataset.url = `${paging.next || ""}`;
 }
 
 function readProfile() {
