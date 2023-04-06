@@ -11,12 +11,12 @@
 
 <h1>Instagram API test</h1>
 
-<p>Step 0: Set <code>clientId</code> and <code>clientSecret</code> in Local Storge. Both values are required for perform Login via Instagram. How to receive those values read in article <a 
+<p><b>Step 0:</b> Set <code>clientId</code> and <code>clientSecret</code> in Local Storge. Both values are required for perform Login via Instagram. How to receive those values read in article <a 
 href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started" target="_blank" rel="noreferrer nofollow">Instagram Basic Display API &rarr; Get Started</a>.</p>
 
 <h2>Login</h2>
 
-<p>Step 1: Login via Instagram via following button and back to current page with <code>code</code> in URL query parameters.</p>
+<p><b>Step 1:</b> Login via Instagram via following button and back to current page with <code>code</code> in URL query parameters.</p>
 
 <p>
   <a href="#" id="login" role="button">Login via Instagram</a>
@@ -24,13 +24,15 @@ href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-s
 
 <h2>Access token</h2>
 
-<p>Step 2. Recive Access Token from Instagram by <code>code</code>, <code>clientId</code>, <code>clientSecret</code>. For this use following CLI command:</p>
+<p><b>Step 2.</b> Recive Access Token from Instagram by <code>code</code>, <code>clientId</code>, <code>clientSecret</code>. For this use following CLI command:</p>
 
 <textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token" onclick="this.select()"></textarea>
 
-<p>Step 3. Provide Access Token received in previous step:</p>
+<p><b>Step 3.</b> Provide Access Token received in previous step:</p>
 
 <textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
+
+<p>After you provided Access Token you can request data from Instagram. For doing that you can use following sections.</p>
 
 <h2>Profile</h2>
 
