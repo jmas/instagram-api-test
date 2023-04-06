@@ -2,8 +2,12 @@
 <html>
 <head>
    <title>Instagram API test</title>
+
+   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css" />
 </head>
 <body>
+
+<main class="container">
 
 <h1>Instagram API test</h1>
 
@@ -47,6 +51,8 @@
 <p>
   <button type="button" id="next">Next</button>
 </p>
+
+</div>
 
 <script>
 function getRedirectUrl() {
@@ -95,6 +101,7 @@ function readProfile() {
   
 fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,username&access_token=${accessToken}`).then(response => response.json()).then(data => {
     console.log({ data });
+
     // populate profile
     setProfile(data);
   });
