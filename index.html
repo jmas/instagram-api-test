@@ -7,6 +7,12 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css" />
+
+  <style>
+  .scrollable {
+    overflow-x: auto;
+  }
+  </style>
 </head>
 <body>
 
@@ -59,18 +65,20 @@
 
   <p><span id="readMedia" role="button">Read Media</span></p>
 
-  <table id="media">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>media_type</th>
-        <th>media_url</th>
-        <th>username</th>
-        <th>timestamp</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="scrollable">
+    <table id="media" role="grid">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>media_type</th>
+          <th>media_url</th>
+          <th>username</th>
+          <th>timestamp</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <p><span id="next" class="outline" role="button">Next</span></p>
 
