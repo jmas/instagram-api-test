@@ -183,8 +183,8 @@ function next(event) {
   })
 }
 
-document.body.onerror = (message) => {
-  alert(`Error happened: ${message}`);
+document.body.onerror = (error) => {
+  alert(`Error happened: ${error instanceof Error ? error.message : error}`);
 };
 
 document.getElementById('readProfile').onclick = readProfile;
