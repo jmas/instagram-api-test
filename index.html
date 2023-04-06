@@ -1,75 +1,75 @@
 <!doctype html>
 <html>
 <head>
-   <title>Instagram API test</title>
+   <title>Instagram API test application</title>
 
    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css" />
 </head>
 <body>
 
+<header class="container">
+  <h1>Instagram API test application</h1>
+
+  <p>Application that can perform Instagram Login, read user’s profile and media data. Source code based on infromation from <a href="https://developers.facebook.com/docs/instagram-basic-display-api" 
+target="_blank" rel="noreferrer nofollow noopener">Instagram Basic Display API</a> docs.</p>
+</header>
+
 <main class="container">
 
-<h1>Instagram API test</h1>
+  <p><b>Step 0:</b> Set <code>clientId</code> and <code>clientSecret</code> in Local Storge. Both values are required for perform Login via Instagram. How to receive those values read in article <a href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started" target="_blank" rel="noreferrer nofollow noopener">Instagram Basic Display API &rarr; Get Started</a>.</p>
 
-<p><b>Step 0:</b> Set <code>clientId</code> and <code>clientSecret</code> in Local Storge. Both values are required for perform Login via Instagram. How to receive those values read in article <a 
-href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started" target="_blank" rel="noreferrer nofollow">Instagram Basic Display API &rarr; Get Started</a>.</p>
+  <h2>Login</h2>
 
-<h2>Login</h2>
+  <p><b>Step 1:</b> Login via Instagram via following button and back to current page with <code>code</code> in URL query parameters.</p>
 
-<p><b>Step 1:</b> Login via Instagram via following button and back to current page with <code>code</code> in URL query parameters.</p>
+  <p><a href="#" id="login" role="button">Login via Instagram</a></p>
 
-<p>
-  <a href="#" id="login" role="button">Login via Instagram</a>
-</p>
+  <h2>Access token</h2>
 
-<h2>Access token</h2>
+  <p><b>Step 2.</b> Recive Access Token from Instagram by <code>code</code>, <code>clientId</code>, <code>clientSecret</code>. For this use following CLI command:</p>
 
-<p><b>Step 2.</b> Recive Access Token from Instagram by <code>code</code>, <code>clientId</code>, <code>clientSecret</code>. For this use following CLI command:</p>
+  <textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token" onclick="this.select()"></textarea>
 
-<textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token" onclick="this.select()"></textarea>
+  <p><b>Step 3.</b> Provide Access Token received in previous step:</p>
 
-<p><b>Step 3.</b> Provide Access Token received in previous step:</p>
+  <textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
 
-<textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
+  <p>After you provided Access Token you can request data from Instagram. For doing that you can use following sections.</p>
 
-<p>After you provided Access Token you can request data from Instagram. For doing that you can use following sections.</p>
+  <h2>Profile</h2>
 
-<h2>Profile</h2>
+  <p>You can access user’s profile data by clicking following button:</p>
 
-<p>You can access user’s profile data by clicking following button:</p>
+  <p><span id="readProfile" role="button">Read Profile</span></p>
 
-<p>
-  <span id="readProfile" role="button">Read Profile</span>
-</p>
+  <textarea id="profile" rows="5" cols="100" placeholder="User’s profile data"></textarea>
 
-<textarea id="profile" rows="5" cols="100" placeholder="User’s profile data"></textarea>
+  <h2>Media</h2>
 
-<h2>Media</h2>
+  <p>You can access user’s media by clicking following button and receive next pages of data by clicing ‘Next’ button:</p>
 
-<p>You can access user’s media by clicking following button and receive next pages of data by clicing ‘Next’ button:</p>
+  <p><span id="readMedia" role="button">Read Media</span></p>
 
-<p>
-  <span id="readMedia" role="button">Read Media</span>
-</p>
+  <table id="media">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>media_type</th>
+        <th>media_url</th>
+        <th>username</th>
+        <th>timestamp</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<table id="media">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>media_type</th>
-      <th>media_url</th>
-      <th>username</th>
-      <th>timestamp</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <p><span id="next" class="outline" role="button">Next</span></p>
 
-<p>
-  <span id="next" class="outline" role="button">Next</span>
-</p>
+</main>
 
-</div>
+<footer class="container">
+  <a href="LICENSE.txt">MIT License</a>
+</footer>
 
 <script>
 function getRedirectUrl() {
