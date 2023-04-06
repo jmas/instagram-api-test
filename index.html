@@ -105,7 +105,7 @@ function setQueryAccessToken() {
   const clientSecret = getClientSecret();
 
   if (!clientId || !clientSecret) {
-    throw new Error('Provide clientId and clientSecret in Local Storage.');
+    throw new Error('clientId and clientSecret wasn’t provided in Local Storage.');
   }
 
   document.getElementById('queryAccessToken').value = `curl -X POST https://api.instagram.com/oauth/access_token -F client_id=${clientId} -F client_secret=${clientSecret} -F grant_type=authorization_code -F redirect_uri=https://jmas.github.io/instagram-api-test/ -F code=${getCode()}`;
@@ -124,7 +124,7 @@ function readProfile() {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    throw new Error('Access token doesn’t provided.');
+    throw new Error('Access token wasn’t provided.');
   }
   
   fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,username&access_token=${accessToken}`).then(response => response.json()).then(data => {
@@ -139,7 +139,7 @@ function readMedia() {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    throw new Error('Access token doesn’t provided.');
+    throw new Error('Access token wasn’t provided.');
   }
   
   fetch(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`).then(response => response.json()).then(data => {
@@ -154,7 +154,7 @@ function next(event) {
   const url = event.currentTarget.dataset.url;
 
   if (!url) {
-    throw new Error('URL doesn’t provided.');
+    throw new Error('URL wasn’t provided.');
   }
 
   fetch(url).then(response => response.json()).then(data => {
