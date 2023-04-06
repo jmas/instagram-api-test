@@ -11,25 +11,40 @@
 
 <h1>Instagram API test</h1>
 
+<p>Step 0: Set <code>clientId</code> and <code>clientSecret</code> in Local Storge. Both values are required for perform Login via Instagram. How to receive those values read in article <a 
+href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started" target="_blank" rel="noreferrer nofollow">Instagram Basic Display API &rarr; Get Started</a>.</p>
+
+<h2>Login</h2>
+
+<p>Step 1: Login via Instagram via following button and back to current page with <code>code</code> in URL query parameters.</p>
+
 <p>
   <a href="#" id="login" role="button">Login via Instagram</a>
 </p>
 
 <h2>Access token</h2>
 
+<p>Step 2. Recive Access Token from Instagram by <code>code</code>, <code>clientId</code>, <code>clientSecret</code>. For this use following CLI command:</p>
+
 <textarea id="queryAccessToken" rows="5" cols="100" placeholder="Code for Query Access Token" onclick="this.select()"></textarea>
+
+<p>Step 3. Provide Access Token received in previous step:</p>
 
 <textarea id="accessToken" rows="5" cols="100" placeholder="Put Access Token here"></textarea>
 
 <h2>Profile</h2>
 
+<p>You can access user’s profile data by clicking following button:</p>
+
 <p>
   <span id="readProfile" role="button">Read Profile</span>
 </p>
 
-<textarea id="profile" rows="5" cols="100"></textarea>
+<textarea id="profile" rows="5" cols="100" placeholder="User’s profile data"></textarea>
 
 <h2>Media</h2>
+
+<p>You can access user’s media by clicking following button and receive next pages of data by clicing ‘Next’ button:</p>
 
 <p>
   <span id="readMedia" role="button">Read Media</span>
@@ -84,7 +99,14 @@ function setProfile(value) {
 }
 
 function setQueryAccessToken() {
-  document.getElementById('queryAccessToken').value = `curl -X POST https://api.instagram.com/oauth/access_token -F client_id=${getClientId()} -F client_secret=${getClientSecret()} -F grant_type=authorization_code -F redirect_uri=https://jmas.github.io/instagram-api-test/ -F code=${getCode()}`;
+  const clientId = getClientId();
+  const clientSecret = getClientSecret();
+
+  if (clientId || clientSecret) {
+    throw new Error('Provide clientId and clientSecret in Local Storage.');
+  }
+
+  document.getElementById('queryAccessToken').value = `curl -X POST https://api.instagram.com/oauth/access_token -F client_id=${clientId} -F client_secret=${clientSecret} -F grant_type=authorization_code -F redirect_uri=https://jmas.github.io/instagram-api-test/ -F code=${getCode()}`;
 }
 
 function setMedia({ data, paging }) {
@@ -98,8 +120,12 @@ function setMedia({ data, paging }) {
 
 function readProfile() {
   const accessToken = getAccessToken();
+
+  if (!accessToken) {
+    throw new Error('Access token doesn’t provided.');
+  }
   
-fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,username&access_token=${accessToken}`).then(response => response.json()).then(data => {
+  fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,username&access_token=${accessToken}`).then(response => response.json()).then(data => {
     console.log({ data });
 
     // populate profile
@@ -109,6 +135,10 @@ fetch(`https://graph.instagram.com/v16.0/me?fields=id,account_type,media_count,u
 
 function readMedia() {
   const accessToken = getAccessToken();
+
+  if (!accessToken) {
+    throw new Error('Access token doesn’t provided.');
+  }
   
   fetch(`https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${accessToken}`).then(response => response.json()).then(data => {
     console.log({ data });
@@ -119,12 +149,22 @@ function readMedia() {
 }
 
 function next(event) {
-  fetch(event.currentTarget.dataset.url).then(response => response.json()).then(data => {
+  const url = event.currentTarget.dataset.url;
+
+  if (!url) {
+    throw new Error('URL doesn’t provided.');
+  }
+
+  fetch(url).then(response => response.json()).then(data => {
     console.log({ data });
 
     setMedia(data);
   })
 }
+
+document.body.onerror = (message) => {
+  alert(`Error happened: ${message}`);
+};
 
 document.getElementById('readProfile').onclick = readProfile;
 document.getElementById('readMedia').onclick = readMedia;
