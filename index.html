@@ -183,8 +183,8 @@ function next(event) {
   })
 }
 
-document.body.onerror = (error) => {
-  alert(`Error happened: ${error instanceof Error ? error.message : error}`);
+window.onerror = (error) => {
+  alert(`Error happened: ${String(error)}`);
 };
 
 document.getElementById('readProfile').onclick = readProfile;
